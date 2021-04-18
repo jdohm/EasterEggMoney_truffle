@@ -1,0 +1,59 @@
+.dw-header {
+    display: flex;
+    font-size: clamp(1.5rem, 7vw, 3rem);
+    flex-grow: 1;
+    justify-content: center;
+    align-items: center;
+}
+
+.dw-subheader {
+    /* display: flex; */
+    font-size: clamp(0.75rem, 3.5vw, 1.5rem);
+    flex-grow: 1;
+    justify-content: left;
+    align-items: center;
+}
+
+.dw-element {
+    display: flex;
+    font-size: clamp(0.5rem, 2.15vw, 1rem);
+    flex-grow: 1;
+    justify-content: center;
+    align-items: center;
+}
+
+.dw-logo {
+    height: clamp(0.75rem, 3vw, 1.5rem);
+    font-size: clamp(0.5rem, 2.15vw, 1rem);
+    display: inline-block;
+    margin-right: clamp(0.25rem, 1vw, 0.5rem);
+}
+
+.dw-text {
+    font-size: clamp(0.5rem, 2.15vw, 1rem);
+}
+
+.dw-first-row {
+    width: 15%;
+}
+
+a:link, a:visited {
+    color: black;
+    text-decoration: underline;
+}
+
+a:hover, a:active {
+    color: #2F4F4F;
+    text-decoration: none;
+}
+
+/* .dw-hide-scrollbar */
+/* { */
+/*     -ms-overflow-style: none;  /\* IE and Edge *\/ */
+/*     scrollbar-width: none;  /\* Firefox *\/ */
+/* } */
+
+/* /\* Hide scrollbar for Chrome, Safari and Opera *\/ */
+/* .dw-hide-scrollbar::-webkit-scrollbar { */
+/*     display: none; */
+/* } */
