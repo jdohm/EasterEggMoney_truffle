@@ -1,72 +1,40 @@
 //based on https://github.com/dappuniversity/eth-todo-list by dapp university
+//import {EasterEggMoney} from 'EasterEggMoney';
+
+let web3;
+let eem;
+let easterEggMoney;
+let netId;
+let acc1;
+
 App = {
   loading: false,
   contracts: {},
 
   load: async () => {
       await App.loadWeb3();
-      await App.loadAccount();
-      await App.loadContract();
+      //await App.loadAccount();
+      //await App.loadContract();
       await App.render();
   },
 
-  // https://medium.com/metamask/https-medium-com-metamask-breaking-change-injecting-web3-7722797916a8
   loadWeb3: async () => {
-    if (typeof web3 !== 'undefined') {
-        App.web3Provider = ethereum;
-        web3 = new Web3(ethereum);
-    } else {
-        window.alert("Please connect to Metamask.");
-    }
-    // Modern dapp browsers...
-    if (window.ethereum) {
-        window.web3 = new Web3(ethereum);
-        try {
-            // Request account access if needed
-            const accounts = await ethereum.send('eth_requestAccounts');
-            // Accounts now exposed, use them
-            ethereum.send('eth_sendTransaction', { from: accounts[0], /* ... */ })
-        } catch (error) {
-            // User denied account access
-}
-      //try {
-        //// Request account access if needed
-          //await ethereum.enable();
-        //// Acccounts now exposed
-          //web3.eth.sendTransaction({/* ... */});
-      //} catch (error) {
-        //// User denied account access...
-      //}
-    }
-    // Legacy dapp browsers...
-    else if (window.web3) {
-        App.web3Provider = ethereum;
-      window.web3 = new Web3(ethereum);
-      // Acccounts always exposed
-        web3.eth.sendTransaction({/* ... */});
-    }
-    // Non-dapp browsers...
-    else {
+      if(typeof window.ethereum!=='undefined'){
+          web3 = new Web3(window.ethereum);
+          netId = await web3.eth.net.getId();
+          const accounts = await web3.eth.getAccounts();
+
+          if(typeof accounts[0] !== 'undefined'){
+              const balance = await web3.eth.getBalance(accounts[0]);
+              acc1 = accounts[0];
+          }
+
+          easterEggMoney = await $.getJSON('EasterEggMoney.json');
+          eem = new web3.eth.Contract(easterEggMoney.abi, easterEggMoney.networks[netId].address);
+      }
+        else {
         console.log('Non-Ethereum browser detected. You should consider trying MetaMask!');
     }
-  },
-
-  loadAccount: async () => {
-    // Set the current blockchain account
-      App.account = web3.eth.accounts[0];
-      // console.log("default account: " + App.account);
-      // console.log("default account: " + web3.eth.accounts[0]);
-      web3.eth.defaultAccount = web3.eth.accounts[0];
-  },
-
-  loadContract: async () => {
-    // Create a JavaScript version of the smart contract
-      const easterEggMoney = await $.getJSON('EasterEggMoney.json');
-      App.contracts.TodoList = TruffleContract(easterEggMoney);
-      App.contracts.TodoList.setProvider(App.web3Provider);
-
-    // Hydrate the smart contract with values from the blockchain
-      App.todoList = await App.contracts.TodoList.deployed();
   },
 
   render: async () => {
@@ -80,17 +48,16 @@ App = {
 
 
       // show pricepool
-      web3.eth.getBalance(App.contracts.TodoList.address, (a,b) => {
-          $('#xDai-value').html(b.toNumber()* 10**-18);
-          console.log(a);
-          console.log(b.toNumber()* 10**-18);
-      });
+      console.log(easterEggMoney.networks[netId].address);
+      let usd = await web3.eth.getBalance(easterEggMoney.networks[netId].address);
+      $('#xDai-value').html(web3.utils.fromWei(usd));
+      console.log("usd " + web3.utils.fromWei(usd));
 
-
-      const findercount = await App.todoList.findersCount();
-      $('#findersCount').html(String(findercount));
-      // console.log("findersCount = " + await App.todoList.findersCount());
-      $('#contractAddr').html(App.contracts.TodoList.address);
+      // const findercount = await App.todoList.findersCount();
+      const findersC = await eem.methods.findersCount().call({from: acc1});
+      console.log("already found by " + findersC);
+      $('#findersCount').html(String(findersC));
+      $('#contractAddr').html(easterEggMoney.networks[netId].address);
 
 
     // Update loading state
@@ -98,16 +65,7 @@ App = {
   },
 
   setLoading: (boolean) => {
-    App.loading = boolean
-    const loader = $('#loader')
-    const content = $('#content')
-    if (boolean) {
-      loader.show()
-      content.hide()
-    } else {
-      loader.hide()
-      content.show()
-    }
+      App.loading = boolean;
   },
 
     redeem: async () => {
@@ -115,7 +73,7 @@ App = {
         const _pw = $('#password').val();
         console.log("default account: " + App.account);
         console.log("pw: " + _pw);
-        let tmp = await App.todoList.find(_pw);
+        const tmp = await eem.methods.find(_pw).send({from: acc1});
     }
 }
 
