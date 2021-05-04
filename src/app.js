@@ -71,9 +71,17 @@ App = {
     redeem: async () => {
         //App.todoList.defaultAccount = await web3.eth.accounts[0];
         const _pw = $('#password').val();
-        console.log("default account: " + App.account);
+        console.log("default account: " + acc1);
         console.log("pw: " + _pw);
         const tmp = await eem.methods.find(_pw).send({from: acc1});
+    },
+
+    reset: async () => {
+        //App.todoList.defaultAccount = await web3.eth.accounts[0];
+        const _pw = '0x' + $('#password').val();
+        console.log("default account: " + acc1);
+        console.log("pw: " + _pw);
+        const tmp = await eem.methods.updatepw(_pw).send({from: acc1});
     }
 }
 

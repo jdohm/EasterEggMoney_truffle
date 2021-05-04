@@ -1,6 +1,6 @@
 <html>
     <head>
-        <title>OpenIdea - EasterEgg</title>
+        <title>OpenIdea - EasterEgg - reset</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="author" content="Jannis Dohm">
         <meta charset="UTF-8">
@@ -13,23 +13,23 @@
     <body style="overflow: hidden;">
     <div style="position: absolute; top: 50%; left: 50%; width: clamp(20%, 600px, 95%); transform: translate(-50%, -50%); background-color: #FFFFFFFF; height: 90%; border-radius: 15px; overflow: hidden;">
         <div style="display: flex;">
-            <div class="dw-header">OpenIdea - EasterEgg</div>
+            <div class="dw-header">OpenIdea - EasterEgg - resetter</div>
         </div>
         <div class="dw-custom-scrollbar" style="display:flex; flex-direction: column; overflow: auto; height: calc(90vh - clamp(5vw, 120px, 15vw) - 6px - 20px); padding: 10px">
-            <div class="dw-subheader"> Enter your xDai address and the EasterEgg password below to receive approx. <span id="xDai-value"></span> usd </div>
+            <div class="dw-subheader"> set new pw to smartcontract. The contract hosts <span id="xDai-value"></span> usd right now. This function should be used after the easteregg was found, to hide a new pw.</div>
+            <div>This function cann only be called by the owner of the smart contract!</div>
         <form>
             <div class="row">
             <div class="input-field col s6">
                 <input id="password" type="text" class="validate">
-                <label for="password">Password</label>
+                <label for="password">Password hash use <a href="https://www.keccak-256.cloxy.net/">keccak 256</a> to get hash</label>
             </div>
             </div>
-            <a class="waves-effect waves-light btn" onclick="App.redeem()">redeem</a>
+            <a class="waves-effect waves-light btn" onclick="App.reset()">reset</a>
         </form>
         <div>This is a EasterEgg, it was solved by <span id="findersCount"></span> persons until now. This is in  no way a guranteed price.</div>
         <div>Support this easteregg by contributing funds to <span id="contractAddr"></span> </div>
         </div>
-        <div><a href="./reset.html">admin page</a><a href="https://openidea.io/media/impressum.html"> impressum </a><a href="https://openidea.io/media/Datenschutz.html"> Datenschutz</a></div>
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <!-- <script src="vendor/util/util.js"></script> -->
